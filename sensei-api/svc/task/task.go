@@ -143,16 +143,6 @@ func (s *Store) Stats(ctx context.Context, form StatsForm) (*utils.StatsResult, 
 		if form.Month != nil {
 			startDate = time.Date(*form.Year, time.Month(*form.Month), 1, 0, 0, 0, 0, time.Local)
 			finishDate = time.Date(*form.Year, time.Month(*form.Month+1), 1, 0, 0, 0, 0, time.Local)
-			nDaysOffset := math.Ceil(finishDate.Sub(startDate).Hours() / 24)
-			nWeeks = int(nDaysOffset / 7)
-			if form.Week != nil {
-				if *form.Week < nWeeks {
-					startDate = startDate.AddDate(0, 0, 7*(*form.Week))
-					finishDate = startDate.AddDate(0, 0, 7)
-				} else {
-					return nil, errors.New("The month doesnt have so many weeks")
-				}
-			}
 		} else {
 			startDate = time.Date(*form.Year, 1, 1, 0, 0, 0, 0, time.Local)
 			finishDate = time.Date(*form.Year+1, 1, 1, 0, 0, 0, 0, time.Local)
@@ -171,6 +161,17 @@ func (s *Store) Stats(ctx context.Context, form StatsForm) (*utils.StatsResult, 
 			}
 			finishDate = finishDate.AddDate(0, 0, dayOffset)
 		}
+		nDaysOffset := math.Ceil(finishDate.Sub(startDate).Hours() / 24)
+		nWeeks = int(nDaysOffset / 7)
+		if form.Week != nil {
+			if *form.Week < nWeeks {
+				startDate = startDate.AddDate(0, 0, 7*(*form.Week))
+				finishDate = startDate.AddDate(0, 0, 7)
+			} else {
+				return nil, errors.New("The month doesnt have so many weeks")
+			}
+		}
+
 		conditions = append(conditions, task.DueDateGTE(startDate))
 		conditions = append(conditions, task.DueDateLT(finishDate))
 	}
