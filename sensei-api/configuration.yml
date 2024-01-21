@@ -1,4 +1,4 @@
-Env: dev
+Env: prod
 Dev:
   CookieHost: 192.168.0.111
   CookieSecure: false
