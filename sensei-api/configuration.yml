@@ -1,25 +1,25 @@
-Env: prod
+Env: dev
 Dev:
-  CookieHost: 192.168.0.111
+  CookieHost: 192.168.1.129
   CookieSecure: false
   HttpOnly: false
-  CorsHost: http://192.168.0.111:3000
+  CorsHost: http://192.168.1.129:3000
 Prod:
-  CookieHost: trainwithsensei.com
+  CookieHost: sensei.dviladev.com
   CookieSecure: true
   HttpOnly: true
-  CorsHost: https://trainwithsensei.com:3000
+  CorsHost: https://sensei.dviladev.com:3000
 IP: 0.0.0.0
 Port: 8080
-JwtKey: sEnSeI258SECRETkey
+JwtKey: ${JWT_SECRET}
 Mail:
-  User: senseitrainingapp@gmail.com
-  Pass: emaddwcfyqjexjum
+  User: viladevapps@gmail.com
+  Pass: ${MAIL_PASS}
   SmtpHost: smtp.gmail.com
   SmtpPort: 587
 DB:
   Port: 3306
   Host: db
   User: root
-  Pass: .sen246SEI.
+  Pass: ${DB_PASS}
   DB: sensei
