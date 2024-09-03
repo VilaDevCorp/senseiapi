@@ -51,6 +51,7 @@ func SignUp(c *gin.Context) {
 }
 
 func CreateVerificationCode(c *gin.Context) {
+	conf := conf.Get()
 	var form verificationCode.CreateForm
 	err := c.ShouldBind(&form)
 	if err != nil {
@@ -60,12 +61,14 @@ func CreateVerificationCode(c *gin.Context) {
 	}
 	svc := svc.Get()
 	verificationCode, err := svc.VerificationCode.Create(c.Request.Context(), form)
-	if verificationCode.Type == utils.VALIDATION_TYPE {
-		err = mail.SendMail(form.Mail, "Validation code", fmt.Sprintf("You can use the code %s to validate the account",
-			verificationCode.Code))
-	} else if verificationCode.Type == utils.RECOVER_TYPE {
-		err = mail.SendMail(form.Mail, "Password change code", fmt.Sprintf("You can use the code %s to change your password",
-			verificationCode.Code))
+	if conf.Mail.Enabled {
+		if verificationCode.Type == utils.VALIDATION_TYPE {
+			err = mail.SendMail(form.Mail, conf.Mail.MailTypes.AccountActivation.Subject, fmt.Sprintf(conf.Mail.MailTypes.AccountActivation.Body,
+				verificationCode.Code))
+		} else if verificationCode.Type == utils.RECOVER_TYPE {
+			err = mail.SendMail(form.Mail, conf.Mail.MailTypes.PasswordReset.Subject, fmt.Sprintf(conf.Mail.MailTypes.PasswordReset.Body,
+				verificationCode.Code))
+		}
 	}
 
 	if err != nil {

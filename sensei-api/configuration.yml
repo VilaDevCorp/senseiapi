@@ -16,6 +16,14 @@ Mail:
   User: viladevapps@gmail.com
   SmtpHost: smtp.gmail.com
   SmtpPort: 587
+  Enabled: true
+  MailTypes:
+    AccountActivation:
+      Subject: Account activation
+      Body: You can use the code %s to validate your Sensei account
+    PasswordReset:
+      Subject: Password reset
+      Body: You can use the code %s to change the password of your Sensei account
 DB:
   Port: 3306
   Host: db

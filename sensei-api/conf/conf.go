@@ -36,11 +36,23 @@ type DatabaseConf struct {
 	DB   string
 }
 
+type MailTypes struct {
+	AccountActivation MailInfo
+	PasswordReset     MailInfo
+}
+
+type MailInfo struct {
+	Subject string
+	Body    string
+}
+
 type MailConf struct {
-	User     string
-	Pass     string
-	SmtpHost string
-	SmtpPort string
+	User      string
+	Pass      string
+	SmtpHost  string
+	SmtpPort  string
+	Enabled   bool
+	MailTypes MailTypes
 }
 
 var conf Conf

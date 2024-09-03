@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"sensei/conf"
 	"sensei/ent"
 	"sensei/ent/user"
 	"sensei/mail"
@@ -107,7 +108,8 @@ func (s *Store) SignUp(ctx context.Context, form SignUpForm) utils.HttpResponse 
 
 	_, err = s.DB.VerificationCode.Create().SetUserID(user.ID).SetExpireDate(expireDate).SetType(utils.VALIDATION_TYPE).SetCode(codeStr).SetValid(true).Save(ctx)
 	fmt.Println(err)
-	if err == nil {
+	conf := conf.Get()
+	if err == nil && conf.Mail.Enabled {
 		err = mail.SendMail(form.Mail, "Validation code", fmt.Sprintf("You can use the code %s to validate your account", codeStr))
 	}
 	res := utils.OkCreated(user)
