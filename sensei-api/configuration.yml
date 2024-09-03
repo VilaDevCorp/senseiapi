@@ -11,15 +11,14 @@ Prod:
   CorsHost: https://sensei.dviladev.com:3000
 IP: 0.0.0.0
 Port: 8080
-JwtKey: ${JWT_SECRET}
+JwtKey: senseisecret
 Mail:
   User: viladevapps@gmail.com
-  Pass: ${MAIL_PASS}
   SmtpHost: smtp.gmail.com
   SmtpPort: 587
 DB:
   Port: 3306
   Host: db
   User: root
-  Pass: ${DB_PASS}
+  Pass: 123456
   DB: sensei
